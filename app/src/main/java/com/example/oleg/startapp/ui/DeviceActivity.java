@@ -1,6 +1,5 @@
 package com.example.oleg.startapp.ui;
 
-import android.bluetooth.BluetoothDevice;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 
 //todo // проверь работу кол бека
 public class DeviceActivity extends AppCompatActivity
-        implements onUpdateRecycler {
+        implements IUpdaterRecycler {
     protected RecyclerView mRecyclerView;
     private ArrayList<DeviceModel> devices;
 
@@ -45,7 +44,7 @@ public class DeviceActivity extends AppCompatActivity
     }
 
     @Override
-    public void updateRecycler() {
+    public void onUpdateRecycler() {
         setUpRecyclerView();
     }
 }

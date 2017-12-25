@@ -1,13 +1,9 @@
 package com.example.oleg.startapp.service;
 
-import android.app.AlertDialog;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,21 +13,15 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.oleg.startapp.Const;
 import com.example.oleg.startapp.Sop;
 import com.example.oleg.startapp.data.BaseHelper;
-import com.example.oleg.startapp.data.DeviceModel;
-import com.example.oleg.startapp.ui.onUpdateRecycler;
+import com.example.oleg.startapp.ui.IUpdaterRecycler;
 
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import static android.bluetooth.BluetoothAdapter.STATE_CONNECTED;
-import static android.bluetooth.BluetoothAdapter.STATE_DISCONNECTED;
-import static android.content.ContentValues.TAG;
 
 
 public class FinderService extends Service {
@@ -39,7 +29,7 @@ public class FinderService extends Service {
     protected Handler handler = new Handler();
     protected ArrayList<BluetoothDevice> deviceItemList;
     public static boolean isStarted;
-    private onUpdateRecycler iUpdater;
+    private IUpdaterRecycler iUpdater;
     private BaseHelper iBase;
     protected CheckRunnable checkRunnable = new CheckRunnable();
 
@@ -84,7 +74,7 @@ public class FinderService extends Service {
                 Sop.d("\n" + device.getName()
                         + "\n" + device.getAddress());
 
-           //     iUpdater.updateRecycler();
+           //     iUpdater.onUpdateRecycler();
             }
         }
     };

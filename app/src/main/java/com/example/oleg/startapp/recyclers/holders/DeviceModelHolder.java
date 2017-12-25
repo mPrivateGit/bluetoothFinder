@@ -48,10 +48,10 @@ public class DeviceModelHolder extends RecyclerView.ViewHolder{
         mBtnConnect = (Button) itemView.findViewById(R.id.btn_connect);
         mBtnConnect.setEnabled(false);
 
-        btServer = new BluetoothServer.Builder(mContext,
-                        "EasyBtService",
-                        ParcelUuid.fromString("00001101-0000-1000-8000-00805F9B34FB"))
-                        .build();
+//        btServer = new BluetoothServer.Builder(mContext,
+//                        "EasyBtService",
+//                        ParcelUuid.fromString("00001101-0000-1000-8000-00805F9B34FB"))
+//                        .build();
     }
 
     public void bind(final DeviceModel device) {
@@ -67,50 +67,16 @@ public class DeviceModelHolder extends RecyclerView.ViewHolder{
                 @Override
                 public void onClick(View view) {
 
+                    /** попытка создать собственный коннект **/
+                    //connect.start();
 
-                    if (btServer == null) {
-                        // Server could not be created.
-                    } else {
-                        // Block until a client connects.
-                        IBluetoothClient btClient = btServer.accept();
-
-                        // Set a data callback to receive data from the remote device.
-                        btClient.setDataCallback(new SampleDataCallback());
-                        // Set a connection callback to be notified of connection changes.
-                        btClient.setConnectionCallback(new SampleConnectionCallback());
-                        // Set a data send callback to be notified when data is sent of fails to send.
-                        btClient.setDataSentCallback(new SampleDataSentCallback());
-
-
-                        btClient.sendData("ServerGreeting", "Hello Client".getBytes());
-                        //We don't want to accept any other clients.
-                        btServer.disconnect();
-
-
-                        // Find the server Bluetooth device.
-                        BluetoothDevice serverDev = BluetoothAdapter.getDefaultAdapter().getRemoteDevice("AA:BB:CC:DD:EE:FF");
-                        IBluetoothClient client = new BluetoothClient.Builder(mContext, serverDev, ParcelUuid.fromString("00001101-0000-1000-8000-00805F9B34FB"))
-                                // We want to be notified when connection completes.
-                                .setConnectionCallback(new SampleConnectionCallback())
-                                // Let's also get notified if it fails
-                                .setConnectionFailedListener(new SampleConnectionFailedListener())
-                                // Receive data from the server
-                                .setDataCallback(new SampleDataCallback())
-                                // Be notified when the data is sent to the server or fails to send.
-                                .setDataSentCallback(new SampleDataSentCallback())
-                                .build();
-
-                        client.connect();
-
-                        //connect.start();
-
-
-                    }
+                    /** Используя библиотеку**/
+                    createServer();
                 }
             });
         }
 
-
+/** попытка создать собственный коннект **/
 //    protected Thread connect = new Thread(new Runnable() {
 //        @Override
 //        public void run() {
@@ -139,5 +105,27 @@ public class DeviceModelHolder extends RecyclerView.ViewHolder{
 //            }
 //        }
 //    });
+    }
+
+    private void createServer() {
+        btServer = new BluetoothServer.Builder(mContext,
+                "EasyBtService", ParcelUuid.fromString("00001101-0000-1000-8000-00805F9B34FB"))
+                .build();
+
+        if (btServer == null) {
+            // Server could not be created.
+        } else {
+            // Block until a client connects.
+            IBluetoothClient btClient = btServer.accept();
+            // Set a data callback to receive data from the remote device.
+            btClient.setDataCallback(new SampleDataCallback());
+            // Set a connection callback to be notified of connection changes.
+            btClient.setConnectionCallback(new SampleConnectionCallback());
+            // Set a data send callback to be notified when data is sent of fails to send.
+            btClient.setDataSentCallback(new SampleDataSentCallback());
+            btClient.sendData("ServerGreeting", "Hello Client".getBytes());
+            //We don't want to accept any other clients.
+            btServer.disconnect();
+        }
     }
 }
