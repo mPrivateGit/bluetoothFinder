@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">StartApp</string>
+    <string name="scan">Scan</string>
+    <string name="str_non_devices">no device</string>
+    <string name="str_connect">Connect</string>
+    <string name="str_info_phone">Information about phone</string>
+</resources>
